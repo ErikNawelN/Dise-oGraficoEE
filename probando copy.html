@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Models And Price</title>
+    <link
+      href="https://fonts.googleapis.com/css?family=Open+Sans:400,600&display=swap"
+      rel="stylesheet"
+    />
+    <script
+      src="https://kit.fontawesome.com/2c36e9b7b1.js"
+      crossorigin="anonymous"
+    ></script>
+    <link rel="stylesheet" href="probando.css" />
+  </head>
+
+  <body>
+    <!-- _________________ CODIGO HTML _______________ -->
+
+    <!-- _________________ Contenedor donde están los selects: _______________ -->
+    <div class="Cont_Elegir_Modelo">
+      <!-- _________________ Select para Para Personalizar la base: _______________ -->
+      <div class="cont_principal_select">
+        <h3 class="titlecontps">Escoja la tela para la base</h3>
+
+        <div class="contenedor" id="contenedor1">
+          <form action="">
+            <div class="selectbox">
+              <div class="select" id="select">
+                <div class="contenido-select">
+                  <h4 class="titulo" id="titulo_select">Tela para la base:</h4>
+                  <p class="descripcion">Personalizar la base</p>
+                </div>
+                <i class="fas fa-angle-down"></i>
+              </div>
+
+              <!-- _________________ Contiene todas las opciones: _______________ -->
+              <div class="opciones" id="opciones">
+                <a href="#" class="opcion">
+                  <div class="contenido-opcion">
+                    <img src="imagenes/rojoalgodon.jfif" alt="" />
+                    <div class="textos">
+                      <h1 class="titulo">Tela Algodon 1</h1>
+                      <p class="descripcion">Diseño Rojo vino.</p>
+                    </div>
+                  </div>
+                </a>
+
+                <a href="#" class="opcion">
+                  <div class="contenido-opcion">
+                    <img src="imagenes/moradoalgodon.jfif" alt="" />
+                    <div class="textos">
+                      <h1 class="titulo">Tela De Algodon</h1>
+                      <p class="descripcion">Diseño Morado Fushia</p>
+                    </div>
+                  </div>
+                </a>
+              </div>
+            </div>
+
+            <input type="hidden" name="pais" id="inputSelect" value="" />
+            <input
+              type="hidden"
+              name="PCojin"
+              id="inputSelectPerFondo"
+              value="0"
+            />
+          </form>
+        </div>
+      </div>
+
+      <!-- _________________ Select para Personalizar el fondo y espaldar: _______________ -->
+      <div class="cont_principal_select">
+        <h2 class="titlecontps">Escoja la tela para el Asiento y espaldar</h2>
+        <div class="contenedor" id="contenedor2">
+          <form action="">
+            <div class="selectbox">
+              <div class="select" id="select">
+                <div class="contenido-select">
+                  <h4 class="titulo" id="titulo_select">
+                    Tela para fondo y espaldar:
+                  </h4>
+                  <p class="descripcion">Personalizar la base</p>
+                </div>
+                <i class="fas fa-angle-down"></i>
+              </div>
+
+			  <div class="opciones" id="opciones">
+				<a href="#" class="opcion">
+					<div class="contenido-opcion">
+						<img src="imagenes/rojoalgodon.jfif" alt="">
+						<div class="textos">
+							<h1 class="titulo">Tela Algodon 1</h1>
+                      <p class="descripcion">Diseño Rojo vino.</p>
+						</div>
+					</div>
+				</a>
+				<a href="#" class="opcion">
+					<div class="contenido-opcion">
+						<img src="imagenes/moradoalgodon.jfif" alt="" />
+                    <div class="textos">
+                      <h1 class="titulo">Tela De Algodon</h1>
+                      <p class="descripcion">Diseño Morado Fushia</p>
+						</div>
+					</div>
+				</a>
+        
+			
+
+          </form>
+        </div>
+      </div>
+      
+
+            <!-- _________________ Boton para tabla de colores. _______________ -->
+      <div class="inputColor">
+        <h3 class="titlecontps">Color_Patas</h3>
+        <center><input class="colorInput" type="color" /></center>
+      </div>
+
+	<div class="divPrecio">
+        <p class="titlePrecio">$ Precio:</p>
+        <span class="visualPrecio">50$</span>
+      </div>
+    </div>
+
+    <script src="js/three.js"></script>
+    <script src="js/OrbitControls.js"></script>
+    <script src="js/OBJLoader.js"></script>
+
+    <script>
+      const scene = new THREE.Scene();
+      scene.background = new THREE.Color("white");
+      const camera = new THREE.PerspectiveCamera(
+        75,
+        window.innerWidth / window.innerHeight,
+        0.1,
+        1000
+      );
+
+      const renderer = new THREE.WebGLRenderer();
+      renderer.shadowMap.enabled = true;
+      renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      document.body.appendChild(renderer.domElement);
+
+      //Desde aqui
+
+      ///luz
+      //ambient lighting
+      const ambientLight = new THREE.AmbientLight("0x404040", 0.2);
+      scene.add(ambientLight);
+      //
+
+      const spotLight = new THREE.SpotLight(0xffffff, 1);
+      spotLight.position.set(-31, 61, 31);
+      spotLight.intensity = 1;
+      spotLight.castShadow = true;
+      scene.add(spotLight);
+      const spotLightHelper = new THREE.SpotLightHelper(spotLight);
+      scene.add(spotLightHelper);
+
+      //Suelo con textura de madera:
+      const textura = new THREE.TextureLoader().load("soll.jpg");
+      textura.wrapS = THREE.RepeatWrapping;
+      textura.wrapT = THREE.RepeatWrapping;
+      const geometrySuelo = new THREE.PlaneGeometry(60, 45);
+      const materialSuelo = new THREE.MeshLambertMaterial({
+        map: textura,
+        side: THREE.DoubleSide,
+      });
+      const Suelo = new THREE.Mesh(geometrySuelo, materialSuelo);
+      scene.add(Suelo);
+      Suelo.receiveShadow = true;
+      Suelo.rotation.x = Math.PI / 2;
+      Suelo.position.y = -2.1;
+
+      ///mi funcion para llamar las diferentes texturas
+      function cambiarTextura(valor) {
+        const textura = new THREE.TextureLoader().load("imagenes/" + valor);
+        textura.wrapS = THREE.RepeatWrapping;
+        textura.wrapT = THREE.RepeatWrapping;
+
+        return textura;
+      }
+
+      //Se carga el modelo:
+      // instantiate a loader --------------------------------------------------
+      const loader = new THREE.OBJLoader();
+      // load a resource
+      loader.load(
+        // resource URL
+        "sofaP_Final.obj",
+        // called when resource is loaded
+        function (object) {
+          console.log(object);
+          scene.add(object);
+
+          object.scale.x = 0.18;
+          object.scale.y = 0.18;
+          object.scale.z = 0.18;
+
+          object.position.y = -2.1;
+
+          /* 0: Base:-----------*/ object.children[0].material =
+            new THREE.MeshPhongMaterial({ color: "#58D3F7" });
+          /* 1: EspaldarYfondo--*/ object.children[1].material =
+            new THREE.MeshPhongMaterial({ color: "#ABEBC6" });
+          /* 2: Cogin:----------*/ object.children[2].material =
+            new THREE.MeshPhongMaterial({ color: "#37C3F7" });
+          /* 3: Patas:----------*/ object.children[3].material =
+            new THREE.MeshPhongMaterial({ color: "#F6A308" });
+          /* 4: Costura:--------*/ object.children[4].material =
+            new THREE.MeshPhongMaterial({ color: "white" });
+
+        
+		  
+		// ------------>>>>>>>>>>> FUNCIONALIDAD SELECT para color de las patas: <<<<<<<<<<<<<<------------------- contenedor1
+		const inputColor = document.querySelector('.colorInput')
+		inputColor.addEventListener("change", cambiarColorPatas);
+
+		function cambiarColorPatas(event) {
+
+		/* 4: Patas:*/object.children[3].material = new THREE.MeshPhysicalMaterial({ color: inputColor.value, side: THREE.DoubleSide })
+    
+		}
+		// ----------------------------------------------------------------------------------
+
+          // ---------->>>>>>>>>> FUNCIONALIDAD SELECT: <<<<<<<<<<<<<<------------------- contenedor1
+          const contenedor1 = document.querySelector("#contenedor1");
+          const select1 = contenedor1.querySelector("#select");
+          const opciones1 = contenedor1.querySelector("#opciones");
+          const contenidoSelect1 = contenedor1.querySelector(
+            "#select .contenido-select"
+          );
+          const hiddenInput1 = contenedor1.querySelector("#inputSelect");
+          const inputSelectPerFondo = contenedor1.querySelector(
+            "#inputSelectPerFondo"
+          );
+          const tituloSelect1 = contenedor1.querySelector("#titulo_select");
+          //inputSelectPerFondo
+          contenedor1
+            .querySelectorAll("#opciones > .opcion")
+            .forEach((opcion) => {
+              opcion.addEventListener("click", (e) => {
+                e.preventDefault();
+
+                const optionSelecionada =
+                  e.currentTarget.querySelector(".titulo").innerText;
+
+                contenidoSelect1.innerHTML = e.currentTarget.innerHTML;
+                console.log(optionSelecionada);
+                select1.classList.toggle("active");
+                opciones1.classList.toggle("active");
+
+                const precioAnterior = parseInt(inputSelectPerFondo.value);
+
+                const opcionAnterior = hiddenInput1.value;
+                hiddenInput1.value =
+                  e.currentTarget.querySelector(".titulo").innerText;
+                const opcionNueva = hiddenInput1.value;
+
+                if (optionSelecionada == "Tela De Algodon") {
+                  /* 0: Base:-----------*/ object.children[0].material =
+                    new THREE.MeshPhongMaterial({
+                      map: cambiarTextura("moradoalgodon.jfif"),
+                      side: THREE.DoubleSide,
+                    });
+                } else if (optionSelecionada == "Tela Algodon 1") {
+                  /* 0: Base:-----------*/ object.children[0].material =
+                    new THREE.MeshPhongMaterial({
+                      map: cambiarTextura("rojoalgodon.jfif"),
+                      side: THREE.DoubleSide,
+                    });
+                }
+              });
+            });
+
+
+			// ------------>>>>>>>>>>> FUNCIONALIDAD SELECT: <<<<<<<<<<<<<<---------contenedor2
+			const contenedor2 = document.querySelector('#contenedor2');
+				const select2 = contenedor2.querySelector('#select');
+				const opciones2 = contenedor2.querySelector('#opciones');
+				const contenidoSelect2 = contenedor2.querySelector('#select .contenido-select');
+				const hiddenInput2 = contenedor2.querySelector('#inputSelect');
+				const hiddenInputPerFyE = contenedor2.querySelector('#inputSelectPerFyE');
+				const tituloSelect2 = contenedor2.querySelector('#titulo_select');
+
+				contenedor2.querySelectorAll('#opciones > .opcion').forEach((opcion) => {
+					opcion.addEventListener('click', (e) => {
+						e.preventDefault();
+
+						const optionSelecionada = e.currentTarget.querySelector('.titulo').innerText;
+
+						contenidoSelect2.innerHTML = e.currentTarget.innerHTML;
+						select2.classList.toggle('active');
+						opciones2.classList.toggle('active');
+
+						const precioAnterior = parseInt(hiddenInputPerFyE.value)
+
+						const opcionAnterior = hiddenInput2.value
+						hiddenInput2.value = e.currentTarget.querySelector('.titulo').innerText;
+						const opcionNueva = hiddenInput2.value
+
+						if (optionSelecionada == "Tela De Algodon") {
+                  /* 0: Base:-----------*/ object.children[1].material =
+                    new THREE.MeshPhongMaterial({
+                      map: cambiarTextura("moradoalgodon.jfif"),
+                      side: THREE.DoubleSide,
+                    });
+                } else if (optionSelecionada == "Tela Algodon 1") {
+                  /* 0: Base:-----------*/ object.children[1].material =
+                    new THREE.MeshPhongMaterial({
+                      map: cambiarTextura("rojoalgodon.jfif"),
+                      side: THREE.DoubleSide,
+                    });
+				// ----------------------------------------------------------------------------------
+						
+				}
+                   });
+                });
+						
+            ///llamando mis eventos select para visualizafr el despliegue de mis opciones.
+          select1.addEventListener("click", () => {
+            select1.classList.toggle("active");
+            opciones1.classList.toggle("active");
+          });
+
+		  select2.addEventListener("click", () => {
+            select2.classList.toggle("active");
+            opciones2.classList.toggle("active");
+          });
+
+          // ----------------------------------------------------------------------------------
+        }
+      );
+
+      const controls = new THREE.OrbitControls(camera, renderer.domElement);
+
+      camera.position.z = 20;
+
+      //hasta aqui lo unico que se puede modificars
+
+      function animate() {
+        requestAnimationFrame(animate);
+
+        renderer.render(scene, camera);
+      }
+
+      animate();
+    </script>
+  </body>
+</html>

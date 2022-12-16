@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="modelado.css" />
+  </head>
+  <body>
+    <script src="js/three.js"></script>
+    <script src="js/OrbitControls.js"></script>
+    <script src="js/OBJLoader.js"></script>
+    <script>
+      const scene = new THREE.Scene();
+
+      //fondo
+      const loaderr = new THREE.TextureLoader();
+      loaderr.load("", function (texture) {
+        scene.background = texture;
+      });
+      //cameraOrthographic///////
+      /*const camera = new THREE.OrthographicCamera(
+        75,
+        window.innerWidth / window.innerHeight,
+        2,
+        60
+      );
+      //scene.add(camera);*/
+      const camera = new THREE.PerspectiveCamera(
+        75,
+        window.innerWidth / window.innerHeight,
+        0.1,
+        1000
+      );
+
+      const renderer = new THREE.WebGLRenderer();
+      renderer.shadowMap.enabled = true;
+      renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      document.body.appendChild(renderer.domElement);
+
+      ///luz
+      //ambient lighting
+      const ambientLight = new THREE.AmbientLight("0x404040", 0.4);
+      scene.add(ambientLight);
+      //
+      const spotLight = new THREE.SpotLight(0xffffff);
+      spotLight.position.set(-31, 61, 31);
+      spotLight.intensity = 1;
+      spotLight.castShadow = true;
+      scene.add(spotLight);
+      const spotLightHelper = new THREE.SpotLightHelper(spotLight);
+      scene.add(spotLightHelper);
+
+      //Desde aqui
+      const geometry = new THREE.BoxGeometry();
+      const material = new THREE.MeshBasicMaterial({
+        color: 0x00ff00,
+        ///wireframe: true,
+      });
+
+      // Crear instancias de un cargador
+      const loader = new THREE.OBJLoader();
+
+      // Cargar un recurso
+      loader.load(
+        // URL del recurso
+        "sofaA.obj",
+        // Se llama cuando se carga el recurso
+        function (object) {
+          console.log(object.children);
+          //cambiando material y color o textura
+          object.children[0].material = new THREE.MeshPhongMaterial({
+            color: "#58D3F7",
+          });
+
+          object.children[1].material = new THREE.MeshPhongMaterial({
+            color: "#ABEBC6",
+          });
+          // tamano y pocicion del objeto.
+          //object.rotation.x = Math.PI / -2;
+          object.position.y = -6;
+          //object.rotation.z = Math.PI / -8;
+          object.scale.x = 0.1;
+          object.scale.y = 0.1;
+          object.scale.z = 0.1;
+
+          scene.add(object);
+          // object.children.material[0].material[0] = new THREE.MeshBasicMaterial(
+          //   {
+          //    color: "red",
+          // }
+          //);
+        }
+      );
+
+      //Suelo con textura de hierba:
+      const textura = new THREE.TextureLoader().load("mesa.jpg");
+      textura.wrapS = THREE.RepeatWrapping;
+      textura.wrapT = THREE.RepeatWrapping;
+      const geometrySuelo = new THREE.PlaneGeometry(35, 35);
+      const materialSuelo = new THREE.MeshLambertMaterial({
+        map: textura,
+        side: THREE.DoubleSide,
+      });
+      const Suelo = new THREE.Mesh(geometrySuelo, materialSuelo);
+      scene.add(Suelo);
+      Suelo.receiveShadow = true;
+      Suelo.rotation.x = Math.PI / 2;
+      Suelo.position.y = -2.1;
+      Suelo.position.y = -6;
+
+      const controls = new THREE.OrbitControls(camera, renderer.domElement);
+
+      //hasta aqui lo unico que se puede modificars
+
+      camera.position.z = 20;
+
+      function animate() {
+        requestAnimationFrame(animate);
+
+        // cube.rotation.x += 0.01;
+        //cube.rotation.y += 0.01;
+
+        renderer.render(scene, camera);
+      }
+
+      animate();
+    </script>
+  </body>
+</html>
